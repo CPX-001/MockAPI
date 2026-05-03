@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Detalle</p>
+    <h1>{{ ticket.title or ticket.name or "Ticket" }}</h1>
+  </div>
+  <div class="head-actions">
+    <a class="secondary-action" href="{{ request.url_for('tickets_index') }}">Volver</a>
+    <a class="primary-action" href="{{ request.url_for('ticket_edit', item_id=item_id) }}">Editar</a>
+  </div>
+</section>
+
+{% include "partials/api_error.html" %}
+
+<section class="detail-layout">
+  <article class="detail-main">
+    <h2>Descripcion</h2>
+    <p>{{ ticket.description or ticket.body or "Sin descripcion." }}</p>
+  </article>
+
+  <aside class="detail-side">
+    <dl>
+      <div>
+        <dt>ID</dt>
+        <dd>{{ ticket.id or ticket._id or item_id }}</dd>
+      </div>
+      <div>
+        <dt>Cliente</dt>
+        <dd>{{ ticket.customer or ticket.client or "Sin cliente" }}</dd>
+      </div>
+      <div>
+        <dt>Prioridad</dt>
+        <dd><span class="pill priority-{{ ticket.priority or 'normal' }}">{{ ticket.priority or "normal" }}</span></dd>
+      </div>
+      <div>
+        <dt>Estado</dt>
+        <dd><span class="pill status-{{ ticket.status or 'open' }}">{{ ticket.status or "open" }}</span></dd>
+      </div>
+    </dl>
+
+    <form method="post" action="{{ request.url_for('ticket_delete', item_id=item_id) }}">
+      <button class="danger-action" type="submit">Eliminar ticket</button>
+    </form>
+  </aside>
+</section>
+{% endblock %}

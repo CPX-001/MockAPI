@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Operaciones</p>
+    <h1>Tickets de soporte</h1>
+  </div>
+  <a class="primary-action" href="{{ request.url_for('ticket_new') }}">Crear ticket</a>
+</section>
+
+{% include "partials/api_error.html" %}
+
+<section class="metrics" aria-label="Resumen">
+  <div>
+    <span>{{ tickets|length }}</span>
+    <strong>Totales</strong>
+  </div>
+  <div>
+    <span>{{ total_open }}</span>
+    <strong>Abiertos</strong>
+  </div>
+  <div>
+    <span>{{ total_critical }}</span>
+    <strong>Criticos</strong>
+  </div>
+</section>
+
+<section class="table-shell">
+  {% if tickets %}
+    <table>
+      <thead>
+        <tr>
+          <th>Titulo</th>
+          <th>Cliente</th>
+          <th>Prioridad</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+          {% set item_id = ticket_id(ticket) %}
+          <tr>
+            <td>
+              <strong>{{ ticket.title or ticket.name or "Sin titulo" }}</strong>
+              <small>#{{ item_id or loop.index }}</small>
+            </td>
+            <td>{{ ticket.customer or ticket.client or "Sin cliente" }}</td>
+            <td><span class="pill priority-{{ ticket.priority or 'normal' }}">{{ ticket.priority or "normal" }}</span></td>
+            <td><span class="pill status-{{ ticket.status or 'open' }}">{{ ticket.status or "open" }}</span></td>
+            <td class="row-actions">
+              {% if item_id %}
+                <a href="{{ request.url_for('ticket_detail', item_id=item_id) }}">Ver</a>
+                <a href="{{ request.url_for('ticket_edit', item_id=item_id) }}">Editar</a>
+              {% else %}
+                <span>Sin id</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">
+      <h2>No hay tickets para mostrar</h2>
+      <p>Crea uno nuevo o revisa que la API configurada exponga <code>/tickets</code>.</p>
+      <a class="primary-action" href="{{ request.url_for('ticket_new') }}">Crear ticket</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

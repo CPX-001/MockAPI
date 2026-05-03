@@ -1,0 +1,10 @@
+{% if api_response and not api_response.ok %}
+  <section class="notice" role="alert">
+    <strong>No se pudo completar la accion.</strong>
+    {% if api_response.error %}
+      <span>{{ api_response.error }}</span>
+    {% else %}
+      <span>La API respondio con estado {{ api_response.status_code }}.</span>
+    {% endif %}
+  </section>
+{% endif %}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ settings.app_title }}</title>
+    <link rel="stylesheet" href="{{ request.url_for('static', path='styles.css') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="{{ request.url_for('tickets_index') }}">{{ settings.app_title }}</a>
+      <nav class="nav" aria-label="Principal">
+        <a href="{{ request.url_for('tickets_index') }}">Tickets</a>
+        <a href="{{ request.url_for('ticket_new') }}">Nuevo ticket</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

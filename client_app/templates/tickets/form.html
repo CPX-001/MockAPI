@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">{% if mode == "edit" %}Editar{% else %}Crear{% endif %}</p>
+    <h1>{% if mode == "edit" %}Actualizar ticket{% else %}Nuevo ticket{% endif %}</h1>
+  </div>
+  <a class="secondary-action" href="{{ request.url_for('tickets_index') }}">Volver</a>
+</section>
+
+{% include "partials/api_error.html" %}
+
+<form class="form-panel" method="post" action="{% if mode == 'edit' %}{{ request.url_for('ticket_update', item_id=item_id) }}{% else %}{{ request.url_for('ticket_create') }}{% endif %}">
+  <label for="title">Titulo</label>
+  <input id="title" name="title" type="text" value="{{ ticket.title or ticket.name or '' }}" required>
+
+  <label for="customer">Cliente</label>
+  <input id="customer" name="customer" type="text" value="{{ ticket.customer or ticket.client or '' }}" required>
+
+  <div class="field-grid">
+    <div>
+      <label for="priority">Prioridad</label>
+      <select id="priority" name="priority">
+        {% set current_priority = ticket.priority or "normal" %}
+        {% for value in ["low", "normal", "high", "critical"] %}
+          <option value="{{ value }}" {% if current_priority == value %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="status">Estado</label>
+      <select id="status" name="status">
+        {% set current_status = ticket.status or "open" %}
+        {% for value in ["open", "pending", "resolved", "closed"] %}
+          <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <label for="description">Descripcion</label>
+  <textarea id="description" name="description" rows="8">{{ ticket.description or ticket.body or '' }}</textarea>
+
+  <button type="submit">{% if mode == "edit" %}Guardar cambios{% else %}Crear ticket{% endif %}</button>
+</form>
+{% endblock %}
