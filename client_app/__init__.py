@@ -1,1 +1,0 @@
-"""Standalone sample client application."""

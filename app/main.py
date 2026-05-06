@@ -1,16 +1,20 @@
-from pathlib import Path
+# Crea la aplicacion FastAPI, inicializa recursos y registra routers.
+from contextlib import asynccontextmanager
 
+from app.routing import router as app_routing
+from app.storage.database import init_db
+from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
-from app.core.settings import TEMPLATES_DIR
-from fastapi import FastAPI, Request, Response
-from fastapi.templating import Jinja2Templates
-from pathlib import Path
-from app.routers import web
 
-app = FastAPI()
 
-app.include_router(web.router)
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(app_routing)
 
 @app.get("/")
-async def web_redirect(request:Request):
-    return RedirectResponse(url = request.url_for("homepage"))
+async def web_redirect(request: Request):
+    return RedirectResponse(url="/web", status_code=302)

@@ -1,0 +1,74 @@
+# Excluye archivos locales, generados y sensibles del control de versiones.
+# Python bytecode / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# uv
+uv.lock
+.python-version
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+pip-wheel-metadata/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+
+# Type checkers / linters
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDEs / editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Sync conflict artifacts
+*.sync-conflict-*
+.sync-conflict-*
+
+# Logs
+*.log
+
+# SQLite / local databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Local uploads / generated files
+uploads/
+media/
+tmp/
+temp/
